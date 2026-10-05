@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Eagles Crest Homestay Kufri | Luxury Mountain Retreat in Himachal Pradesh</title>
-<meta name="description" content="Experience luxury mountain living at Eagles Crest Homestay in Kufri, Himachal Pradesh. Panoramic Himalayan views, home-style meals, guided treks & bonfire nights. Book now!">
+<meta name="description" content="Experience luxury mountain living at Eagles Crest Homestay in Kufri, Himachal Pradesh. Panoramic Himalayan views, fresh homemade food and snacks, jungle trails & bonfire nights. Book now!">
 <meta name="keywords" content="Eagles Crest Homestay, Kufri homestay, Shimla luxury stay, Himalayan retreat, Himachal Pradesh accommodation, mountain homestay">
 <meta name="author" content="Eagles Crest Homestay">
 <meta name="robots" content="index, follow">
@@ -16,7 +16,7 @@
 <meta property="og:locale" content="en_IN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Eagles Crest Homestay Kufri">
-<meta name="twitter:description" content="Luxury mountain retreat in Kufri, Himachal Pradesh. Panoramic views, home-style meals & warm hospitality.">
+<meta name="twitter:description" content="Luxury mountain retreat in Kufri, Himachal Pradesh. Panoramic views, fresh homemade food and snacks & warm hospitality.">
 <meta name="twitter:image" content="./images/Main%20Page%20Photo-900x600.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -54,16 +54,21 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--dark-text)}
 .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1}
-.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(26,58,47,.5) 0%,rgba(26,58,47,.7) 50%,rgba(26,58,47,.85) 100%);z-index:2}
+.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;transform:scale(1.035);filter:saturate(.9) contrast(1.04) brightness(.9);animation:heroCinematic 18s ease-in-out infinite alternate;will-change:transform}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(16,38,31,.34) 0%,rgba(26,58,47,.54) 48%,rgba(18,39,32,.82) 100%);z-index:2}
+.hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(115deg,rgba(201,169,110,.06),transparent 38%,rgba(13,115,119,.08));animation:heroLight 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes heroCinematic{0%{transform:scale(1.035) translate3d(0,0,0)}100%{transform:scale(1.095) translate3d(-.7%,-.5%,0)}}
+@keyframes heroLight{0%{opacity:.45;transform:scale(1)}100%{opacity:.85;transform:scale(1.05)}}
 .snowflakes{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:hidden}
 .snowflake{position:absolute;top:-10px;color:rgba(255,255,255,.6);font-size:1em;animation:fall linear infinite}
 @keyframes fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(360deg);opacity:.3}}
 .hero-content{position:relative;z-index:4;text-align:center;color:#fff;padding:0 24px;max-width:900px}
-.hero-badge{display:inline-block;border:1px solid rgba(255,255,255,.3);padding:8px 24px;border-radius:30px;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px)}
-.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;margin-bottom:16px;line-height:1.15;letter-spacing:1px}
-.hero-tagline{font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.85);margin-bottom:40px;letter-spacing:1px}
-.hero-buttons{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.hero-content>*{opacity:0;transform:translateY(22px);animation:heroReveal .9s cubic-bezier(.22,.61,.36,1) forwards}
+.hero-badge{display:inline-block;border:1px solid rgba(255,255,255,.3);padding:8px 24px;border-radius:30px;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);animation-delay:.2s}
+.hero-title{font-size:clamp(2.5rem,6vw,4.5rem);color:#fff;margin-bottom:16px;line-height:1.15;letter-spacing:1px;text-shadow:0 8px 35px rgba(0,0,0,.2);animation-delay:.38s}
+.hero-tagline{font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.85);margin-bottom:40px;letter-spacing:1px;animation-delay:.56s}
+.hero-buttons{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;animation-delay:.72s}
+@keyframes heroReveal{to{opacity:1;transform:translateY(0)}}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:30px;font-size:.9rem;font-weight:600;text-decoration:none;transition:all .3s ease;cursor:pointer;border:none;font-family:'Montserrat',sans-serif}
 .btn-primary{background:var(--accent-gold);color:#fff}
 .btn-primary:hover{background:var(--accent-light-gold);transform:translateY(-3px);box-shadow:0 12px 35px rgba(201,169,110,.35)}
@@ -223,6 +228,9 @@ body.lang-hi .hi{display:inline}
 ::-webkit-scrollbar-track{background:var(--cream)}
 ::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--primary-dark)}
+
+@media(prefers-reduced-motion:reduce){.hero-video,.hero-overlay::after,.hero-content>*,.scroll-indicator{animation:none!important}.hero-video{transform:scale(1.035)}.hero-content>*{opacity:1;transform:none}}
+@media(max-width:768px){.hero-video{animation-duration:24s;transform:scale(1.02)}}
 </style>
 </head>
 <body>
@@ -284,11 +292,11 @@ body.lang-hi .hi{display:inline}
 <p><span class="en">Built and lovingly run by our family, every corner of this home reflects our passion for hospitality and our deep connection to these mountains. From the handpicked furnishings to the home-cooked Himachali meals, every detail is crafted to make you feel like family.</span><span class="hi">हिमाचल की पहाड़ियों में बसा यह होमस्टे हमारे परिवार का सपना है। हर कोने में पहाड़ों से मोहब्बत और मेहमाननवाज़ी की गर्माहट मिलेगी।</span></p>
 <p>Wake up to mist-kissed valleys, spend your afternoons exploring hidden trails, and end your evenings around a crackling bonfire under a canopy of stars. At Eagles Crest, time slows down, and the mountains whisper their ancient secrets.</p>
 <div class="about-features">
-<div class="feature-item"><div class="feature-icon"><i class="fas fa-mountain"></i></div><div class="feature-title">Panoramic Views</div><div class="feature-desc">180° Himalayan vistas</div></div>
-<div class="feature-item"><div class="feature-icon"><i class="fas fa-utensils"></i></div><div class="feature-title">Home-Style Meals</div><div class="feature-desc">Authentic Himachali cuisine</div></div>
+<div class="feature-item"><div class="feature-icon"><i class="fas fa-mountain"></i></div><div class="feature-title">Panoramic Views</div><div class="feature-desc">360° Himalayan vistas</div></div>
+<div class="feature-item"><div class="feature-icon"><i class="fas fa-utensils"></i></div><div class="feature-title">Fresh Homemade Food & Snacks</div><div class="feature-desc">Fresh homemade food and snacks</div></div>
 <div class="feature-item"><div class="feature-icon"><i class="fas fa-wifi"></i></div><div class="feature-title">Free WiFi</div><div class="feature-desc">Stay connected</div></div>
 <div class="feature-item"><div class="feature-icon"><i class="fas fa-car"></i></div><div class="feature-title">Free Parking</div><div class="feature-desc">Secure on-site parking</div></div>
-<div class="feature-item"><div class="feature-icon"><i class="fas fa-hiking"></i></div><div class="feature-title">Guided Treks</div><div class="feature-desc">Explore hidden trails</div></div>
+<div class="feature-item"><div class="feature-icon"><i class="fas fa-hiking"></i></div><div class="feature-title">Jungle Trails</div><div class="feature-desc">Explore jungle trails</div></div>
 <div class="feature-item"><div class="feature-icon"><i class="fas fa-fire"></i></div><div class="feature-title">Bonfire Nights</div><div class="feature-desc">Starry evenings</div></div>
 </div>
 </div>
@@ -325,17 +333,17 @@ body.lang-hi .hi{display:inline}
 <div class="room-info">
 <span class="room-badge badge-popular">Most Popular</span>
 <h3 class="room-name">Ground Floor Family Suite</h3>
-<p class="room-desc">Our most sought-after accommodation, this spacious ground-floor suite offers the perfect blend of luxury and homely comfort. Featuring two beautifully appointed bedrooms, a generous living area, and a fully equipped kitchen — ideal for families seeking a home away from home.</p>
+<p class="room-desc">Our most sought-after accommodation, this spacious ground-floor suite offers the perfect blend of luxury and homely comfort. Featuring two beautifully appointed bedrooms, a generous TV lounge, and a dining area — ideal for families seeking a home away from home.</p>
 <div class="room-features">
 <div class="room-feature"><i class="fas fa-bed"></i> 2 Bedrooms</div>
 <div class="room-feature"><i class="fas fa-bath"></i> 2 Bathrooms</div>
-<div class="room-feature"><i class="fas fa-couch"></i> Living Area</div>
-<div class="room-feature"><i class="fas fa-utensils"></i> Dining + Kitchen</div>
-<div class="room-feature"><i class="fas fa-tv"></i> Entertainment</div>
+<div class="room-feature"><i class="fas fa-couch"></i> TV Lounge</div>
+<div class="room-feature"><i class="fas fa-utensils"></i> Dining Area</div>
+<div class="room-feature"><i class="fas fa-tv"></i> TV Lounge</div>
 <div class="room-feature"><i class="fas fa-mountain"></i> Valley Views</div>
 </div>
 <div class="room-price-block">
-<div class="room-price">Rs. 8,500 <span>/ night</span></div>
+<div class="room-price">Rates on request</div>
 <div class="room-guests"><i class="fas fa-users"></i> Up to 4 Adults</div>
 </div>
 <a href="https://wa.me/918544743848?text=Hi! I am interested in booking the Ground Floor Family Suite at Eagles Crest Homestay." target="_blank" class="btn btn-primary" style="width:fit-content"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a>
@@ -364,17 +372,17 @@ body.lang-hi .hi{display:inline}
 <div class="room-info">
 <span class="room-badge badge-first">First Floor</span>
 <h3 class="room-name">Family Suite 2 — First Floor</h3>
-<p class="room-desc">Elevate your stay — literally. Perched on the first floor, this suite offers breathtaking panoramic views from two large balconies. With premium furnishings, a spacious living and dining area, and a fully equipped kitchen, it is designed for families who refuse to compromise on comfort or views.</p>
+<p class="room-desc">Elevate your stay — literally. Perched on the first floor, this suite offers breathtaking panoramic views from two large balconies. With premium furnishings and a spacious living and dining area, it is designed for families who refuse to compromise on comfort or views.</p>
 <div class="room-features">
 <div class="room-feature"><i class="fas fa-bed"></i> 2 Bedrooms</div>
 <div class="room-feature"><i class="fas fa-bath"></i> 2 Bathrooms</div>
 <div class="room-feature"><i class="fas fa-couch"></i> Living + Dining</div>
-<div class="room-feature"><i class="fas fa-blender"></i> Full Kitchen</div>
-<div class="room-feature"><i class="fas fa-tv"></i> Entertainment</div>
+<div class="room-feature"><i class="fas fa-utensils"></i> Dining Area</div>
+<div class="room-feature"><i class="fas fa-tv"></i> TV Lounge</div>
 <div class="room-feature"><i class="fas fa-door-open"></i> 2 Large Balconies</div>
 </div>
 <div class="room-price-block">
-<div class="room-price">Rs. 9,000 <span>/ night</span></div>
+<div class="room-price">Rates on request</div>
 <div class="room-guests"><i class="fas fa-users"></i> Up to 4-5 Adults</div>
 </div>
 <a href="https://wa.me/918544743848?text=Hi! I am interested in booking the First Floor Family Suite at Eagles Crest Homestay." target="_blank" class="btn btn-primary" style="width:fit-content"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a>
@@ -396,17 +404,17 @@ body.lang-hi .hi{display:inline}
 <div class="room-info">
 <span class="room-badge badge-cozy">Cozy & Compact</span>
 <h3 class="room-name">Single Room — Ground Floor</h3>
-<p class="room-desc">Perfect for couples or solo travelers seeking intimacy and comfort. This charming room features a large bed with mountain views, modern amenities, and the same warm hospitality that defines Eagles Crest — all at an unbeatable value.</p>
+<p class="room-desc">Perfect for couples or solo travelers seeking intimacy and comfort. This charming room features a king size bed with mountain views, modern amenities, and the same warm hospitality that defines Eagles Crest — all at an unbeatable value.</p>
 <div class="room-features">
-<div class="room-feature"><i class="fas fa-bed"></i> 1 Large Bed</div>
+<div class="room-feature"><i class="fas fa-bed"></i> 1 King Size Bed</div>
 <div class="room-feature"><i class="fas fa-mountain"></i> Mountain View</div>
 <div class="room-feature"><i class="fas fa-bath"></i> Attached Bathroom</div>
 <div class="room-feature"><i class="fas fa-wifi"></i> Free WiFi</div>
-<div class="room-feature"><i class="fas fa-temperature-high"></i> Heated Room</div>
-<div class="room-feature"><i class="fas fa-mug-hot"></i> Complimentary Tea</div>
+<div class="room-feature"><i class="fas fa-snowflake"></i> All-Weather Comfort</div>
+
 </div>
 <div class="room-price-block">
-<div class="room-price">Rs. 3,500 <span>/ night</span></div>
+<div class="room-price">Rates on request</div>
 <div class="room-guests"><i class="fas fa-users"></i> Up to 2 Adults</div>
 </div>
 <a href="https://wa.me/918544743848?text=Hi! I am interested in booking the Single Room at Eagles Crest Homestay." target="_blank" class="btn btn-primary" style="width:fit-content"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a>
@@ -425,8 +433,8 @@ body.lang-hi .hi{display:inline}
 <div class="amenities-grid">
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="0">
 <i class="fas fa-utensils amenity-icon"></i>
-<h4 class="amenity-title">Home-Style Meals</h4>
-<p class="amenity-desc">Authentic Himachali cuisine prepared with love and local ingredients</p>
+<h4 class="amenity-title">Fresh Homemade Food & Snacks</h4>
+<p class="amenity-desc">Fresh homemade food and snacks prepared with love</p>
 </div>
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="50">
 <i class="fas fa-wifi amenity-icon"></i>
@@ -440,8 +448,8 @@ body.lang-hi .hi{display:inline}
 </div>
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="150">
 <i class="fas fa-hiking amenity-icon"></i>
-<h4 class="amenity-title">Mountain Treks</h4>
-<p class="amenity-desc">Guided trekking routes through pristine Himalayan trails</p>
+<h4 class="amenity-title">Jungle Trails</h4>
+<p class="amenity-desc">Explore scenic jungle trails through the Himalayan landscape</p>
 </div>
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="200">
 <i class="fas fa-fire amenity-icon"></i>
@@ -451,7 +459,7 @@ body.lang-hi .hi{display:inline}
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="250">
 <i class="fas fa-snowflake amenity-icon"></i>
 <h4 class="amenity-title">All-Weather Comfort</h4>
-<p class="amenity-desc">Heated rooms and geysers for cozy winters</p>
+<p class="amenity-desc">Comfort thoughtfully provided for every season</p>
 </div>
 <div class="amenity-card" data-aos="fade-up" data-aos-delay="300">
 <i class="fas fa-camera amenity-icon"></i>
@@ -540,7 +548,8 @@ body.lang-hi .hi{display:inline}
 </div>
 <div class="location-grid">
 <div class="map-container" data-aos="fade-right">
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3420.0!2d77.26!3d31.10!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDA2JzAwLjAiTiA3N8KwMTUnMzYuMCJF!5e0!3m2!1sen!2sin!4v1" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<iframe src="https://www.google.com/maps?q=Eagles%20Crest%20Homestay%20Kufri%2C%20Village%20Harog%2C%20Balku%20Road%2C%20Kufri%2C%20Shimla%2C%20Himachal%20Pradesh%20171012&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<a href="https://maps.app.goo.gl/yAWbyAyBdhjAEf9Z9?g_st=ac" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--cream);color:var(--teal);text-decoration:none;font-weight:600;">Open location in Google Maps</a>
 </div>
 <div class="location-info" data-aos="fade-left">
 <h3>Getting Here</h3>
@@ -603,14 +612,15 @@ body.lang-hi .hi{display:inline}
 <div>
 <strong>WhatsApp</strong>
 <a href="https://wa.me/918544743848" target="_blank">+91 85447 43848</a><br>
-<a href="https://wa.me/919816991227" target="_blank">+91 98169 91227</a>
+<a href="https://wa.me/919816991227" target="_blank">+91 98169 91227</a><br>
+<a href="tel:+919871061227">+91 98710 61227</a>
 </div>
 </div>
 <div class="contact-item">
 <i class="fas fa-envelope"></i>
 <div>
 <strong>Email</strong>
-<a href="mailto:eaglescrest@gmail.com">eaglescrest@gmail.com</a>
+<a href="mailto:eaglescrestkufri@gmail.com">eaglescrestkufri@gmail.com</a>
 </div>
 </div>
 <div class="contact-item">
@@ -672,9 +682,9 @@ body.lang-hi .hi{display:inline}
 <label for="room">Room Preference</label>
 <select id="room" name="room" required>
 <option value="">Select room</option>
-<option value="Ground Floor Family Suite">Ground Floor Family Suite — Rs. 8,500/night</option>
-<option value="First Floor Family Suite">First Floor Family Suite — Rs. 9,000/night</option>
-<option value="Single Room">Single Room — Rs. 3,500/night</option>
+<option value="Ground Floor Family Suite">Ground Floor Family Suite — Rates on request</option>
+<option value="First Floor Family Suite">First Floor Family Suite — Rates on request</option>
+<option value="Single Room">Single Room — Rates on request</option>
 </select>
 </div>
 </div>
@@ -728,7 +738,8 @@ body.lang-hi .hi{display:inline}
 <h5>Contact</h5>
 <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/918544743848" target="_blank">+91 85447 43848</a></p>
 <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/919816991227" target="_blank">+91 98169 91227</a></p>
-<p><i class="fas fa-envelope"></i> <a href="mailto:eaglescrest@gmail.com">eaglescrest@gmail.com</a></p>
+<p><i class="fas fa-phone"></i> <a href="tel:+919871061227">+91 98710 61227</a></p>
+<p><i class="fas fa-envelope"></i> <a href="mailto:eaglescrestkufri@gmail.com">eaglescrestkufri@gmail.com</a></p>
 <p><i class="fas fa-map-marker-alt"></i> Village Harog, Balku Road, Kufri, Shimla, HP 171012</p>
 </div>
 </div>
