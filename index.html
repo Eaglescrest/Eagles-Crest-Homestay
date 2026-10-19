@@ -103,10 +103,13 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .room-card:nth-child(even)>*{direction:ltr}
 .room-gallery{position:relative;background:var(--dark-text)}
 .room-main-img{width:100%;height:100%;min-height:400px;object-fit:cover;display:block}
-.room-thumbnails{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;padding:8px;background:rgba(0,0,0,.5);border-radius:30px;backdrop-filter:blur(10px);max-width:90%;overflow-x:auto;scrollbar-width:none}
-.room-thumbnails::-webkit-scrollbar{display:none}
-.room-thumb{width:56px;height:56px;border-radius:8px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:all .3s;opacity:.7;flex-shrink:0}
-.room-thumb:hover,.room-thumb.active{border-color:var(--accent-gold);opacity:1;transform:scale(1.05)}
+.room-main-img{transition:opacity .18s ease}
+.room-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;justify-content:center;width:42px;height:54px;border:0;border-radius:8px;background:transparent;color:#fff;font-size:1.25rem;cursor:pointer;opacity:.7;text-shadow:0 1px 5px rgba(0,0,0,.65);transition:opacity .2s,background .2s}
+.room-arrow:hover,.room-arrow:focus-visible{opacity:1;background:rgba(0,0,0,.12)}
+.room-arrow:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.room-arrow-prev{left:8px}
+.room-arrow-next{right:8px}
+@media(max-width:768px){.room-arrow{width:36px;height:48px}.room-arrow-prev{left:2px}.room-arrow-next{right:2px}}
 .room-info{padding:40px;display:flex;flex-direction:column;justify-content:center}
 .room-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;width:fit-content}
 .badge-popular{background:var(--accent-gold);color:#fff}
@@ -316,19 +319,21 @@ body.lang-hi .hi{display:inline}
 <div class="room-card" data-aos="fade-up">
 <div class="room-gallery">
 <img src="./images/ground-floor-rooms/Ground%20Floor%20Living%20Area%201-900x600.jpg" alt="Ground Floor Family Suite" class="room-main-img" id="room1-main" onerror="this.style.background='linear-gradient(135deg,#1a3a2f,#2d5a4a)'">
-<div class="room-thumbnails">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Living%20Area%201-900x600.jpg" class="room-thumb active" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 1">
-<img src="./images/ground-floor-rooms/Ground%20FLoor%20Living%20area%202-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 2">
-<img src="./images/ground-floor-rooms/Ground%20FLoor%20Living%20area%203-900x1350.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 3">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Living%20Area%204-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 4">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%201%20Bathroom-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 5">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%201.1-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 6">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%201.2-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 7">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%201-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 8">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%202%20Bathroom-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 9">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%202.1-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 10">
-<img src="./images/ground-floor-rooms/Ground%20Floor%20Room%202-900x600.jpg" class="room-thumb" data-target="room1-main" onclick="changeImage(this)" alt="Room photo 11">
+<div class="room-photo-sources" hidden>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Living%20Area%201-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20FLoor%20Living%20area%202-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20FLoor%20Living%20area%203-900x1350.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Living%20Area%204-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%201%20Bathroom-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%201.1-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%201.2-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%201-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%202%20Bathroom-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%202.1-900x600.jpg"></span>
+<span data-src="./images/ground-floor-rooms/Ground%20Floor%20Room%202-900x600.jpg"></span>
 </div>
+<button type="button" class="room-arrow room-arrow-prev" aria-label="Previous room photo" onclick="navigateRoom(this,-1)"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+<button type="button" class="room-arrow room-arrow-next" aria-label="Next room photo" onclick="navigateRoom(this,1)"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
 </div>
 <div class="room-info">
 <span class="room-badge badge-popular">Most Popular</span>
@@ -354,20 +359,22 @@ body.lang-hi .hi{display:inline}
 <div class="room-card" data-aos="fade-up">
 <div class="room-gallery">
 <img src="./images/first-floor-rooms/First%20Floor%20Balcony%201-900x600.jpg" alt="First Floor Family Suite" class="room-main-img" id="room2-main" onerror="this.style.background='linear-gradient(135deg,#1a3a2f,#2d5a4a)'">
-<div class="room-thumbnails">
-<img src="./images/first-floor-rooms/First%20Floor%20Balcony%201-900x600.jpg" class="room-thumb active" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 1">
-<img src="./images/first-floor-rooms/First%20Floor%20Balcony%202-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 2">
-<img src="./images/first-floor-rooms/First%20Floor%20Bathroom%202-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 3">
-<img src="./images/first-floor-rooms/First%20Floor%20Bathroom%20Room%201-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 4">
-<img src="./images/first-floor-rooms/First%20Floor%20Living%20Area%201-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 5">
-<img src="./images/first-floor-rooms/First%20Floor%20Living%20Area%202-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 6">
-<img src="./images/first-floor-rooms/First%20Floor%20Living%20Area%203-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 7">
-<img src="./images/first-floor-rooms/First%20Floor%20Room%201.2-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 8">
-<img src="./images/first-floor-rooms/First%20Floor%20Room%201-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 9">
-<img src="./images/first-floor-rooms/First%20Floor%20Room%202.1-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 10">
-<img src="./images/first-floor-rooms/First%20Floor%20Room%202.2-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 11">
-<img src="./images/first-floor-rooms/First%20Floor%20Room%202-900x600.jpg" class="room-thumb" data-target="room2-main" onclick="changeImage(this)" alt="Room photo 12">
+<div class="room-photo-sources" hidden>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Balcony%201-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Balcony%202-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Bathroom%202-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Bathroom%20Room%201-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Living%20Area%201-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Living%20Area%202-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Living%20Area%203-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Room%201.2-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Room%201-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Room%202.1-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Room%202.2-900x600.jpg"></span>
+<span data-src="./images/first-floor-rooms/First%20Floor%20Room%202-900x600.jpg"></span>
 </div>
+<button type="button" class="room-arrow room-arrow-prev" aria-label="Previous room photo" onclick="navigateRoom(this,-1)"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+<button type="button" class="room-arrow room-arrow-next" aria-label="Next room photo" onclick="navigateRoom(this,1)"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
 </div>
 <div class="room-info">
 <span class="room-badge badge-first">First Floor</span>
@@ -393,13 +400,15 @@ body.lang-hi .hi{display:inline}
 <div class="room-card" data-aos="fade-up">
 <div class="room-gallery">
 <img src="./images/single-rooms/Single%20Room%201.1-900x600.jpg" alt="Single Room" class="room-main-img" id="room3-main" onerror="this.style.background='linear-gradient(135deg,#1a3a2f,#2d5a4a)'">
-<div class="room-thumbnails">
-<img src="./images/single-rooms/Single%20Room%201.1-900x600.jpg" class="room-thumb active" data-target="room3-main" onclick="changeImage(this)" alt="Room photo 1">
-<img src="./images/single-rooms/Single%20Room%201-900x600.jpg" class="room-thumb" data-target="room3-main" onclick="changeImage(this)" alt="Room photo 2">
-<img src="./images/single-rooms/Single%20Room%202.1-900x600.jpg" class="room-thumb" data-target="room3-main" onclick="changeImage(this)" alt="Room photo 3">
-<img src="./images/single-rooms/Single%20Room%202-900x600.jpg" class="room-thumb" data-target="room3-main" onclick="changeImage(this)" alt="Room photo 4">
-<img src="./images/single-rooms/Single%20Room%20Bathroom-900x599.jpg" class="room-thumb" data-target="room3-main" onclick="changeImage(this)" alt="Room photo 5">
+<div class="room-photo-sources" hidden>
+<span data-src="./images/single-rooms/Single%20Room%201.1-900x600.jpg"></span>
+<span data-src="./images/single-rooms/Single%20Room%201-900x600.jpg"></span>
+<span data-src="./images/single-rooms/Single%20Room%202.1-900x600.jpg"></span>
+<span data-src="./images/single-rooms/Single%20Room%202-900x600.jpg"></span>
+<span data-src="./images/single-rooms/Single%20Room%20Bathroom-900x599.jpg"></span>
 </div>
+<button type="button" class="room-arrow room-arrow-prev" aria-label="Previous room photo" onclick="navigateRoom(this,-1)"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+<button type="button" class="room-arrow room-arrow-next" aria-label="Next room photo" onclick="navigateRoom(this,1)"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
 </div>
 <div class="room-info">
 <span class="room-badge badge-cozy">Cozy & Compact</span>
@@ -548,8 +557,8 @@ body.lang-hi .hi{display:inline}
 </div>
 <div class="location-grid">
 <div class="map-container" data-aos="fade-right">
-<iframe src="https://www.google.com/maps?q=Eagles%20Crest%20Homestay%20Kufri%2C%20Village%20Harog%2C%20Balku%20Road%2C%20Kufri%2C%20Shimla%2C%20Himachal%20Pradesh%20171012&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-<a href="https://maps.app.goo.gl/yAWbyAyBdhjAEf9Z9?g_st=ac" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--cream);color:var(--teal);text-decoration:none;font-weight:600;">Open location in Google Maps</a>
+<iframe src="https://www.google.com/maps?q=https%3A%2F%2Fmaps.app.goo.gl%2F4a1PV5KhAkLokmjh9%3Fg_st%3Dac&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<a href="https://maps.app.goo.gl/4a1PV5KhAkLokmjh9?g_st=ac" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--cream);color:var(--teal);text-decoration:none;font-weight:600;">Open location in Google Maps</a>
 </div>
 <div class="location-info" data-aos="fade-left">
 <h3>Getting Here</h3>
@@ -794,17 +803,25 @@ container.appendChild(flake);
 }
 createSnowflakes();
 
-function changeImage(thumb){
-const targetId=thumb.dataset.target;
-const mainImg=document.getElementById(targetId);
-mainImg.style.opacity='0';
-setTimeout(()=>{
-mainImg.src=thumb.src;
-mainImg.alt=thumb.alt;
-mainImg.style.opacity='1';
-},200);
-document.querySelectorAll(`[data-target="${targetId}"]`).forEach(t=>t.classList.remove('active'));
-thumb.classList.add('active');
+function navigateRoom(button,direction){
+ const gallery=button.closest('.room-gallery');
+ const mainImg=gallery.querySelector('.room-main-img');
+ const photos=Array.from(gallery.querySelectorAll('.room-photo-sources [data-src]'));
+ if(!photos.length)return;
+ const current=Number(gallery.dataset.photoIndex||0);
+ const next=(current+direction+photos.length)%photos.length;
+ gallery.dataset.photoIndex=String(next);
+ mainImg.style.opacity='0';
+ // Preload the next photo before displaying it to avoid a blank frame.
+ const preload=new Image();
+ preload.onload=()=>{
+  if(Number(gallery.dataset.photoIndex)!==next)return;
+  mainImg.src=preload.src;
+  mainImg.alt=gallery.closest('.room-card').querySelector('.room-name').textContent+' — photo '+(next+1);
+  mainImg.style.opacity='1';
+ };
+ preload.onerror=()=>{mainImg.style.opacity='1';};
+ preload.src=photos[next].dataset.src;
 }
 
 const galleryImages=[
