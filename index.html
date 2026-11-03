@@ -53,11 +53,13 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px);background:var(--dark-text)}
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--dark-text)}
-.hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-video-backdrop{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;object-position:center;z-index:1;filter:blur(18px) brightness(.58);transform:scale(1.04);pointer-events:none}
-.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:2;transform:none;filter:none;animation:none;will-change:auto;background:transparent}
+.hero{position:relative;height:100vh;height:100svh;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#172b23}
+/* Full-bleed blurred duplicate fills every edge without stretching the original footage. */
+.hero-video-backdrop{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;object-position:center;z-index:0;filter:blur(22px) brightness(.72) saturate(1.08);transform:scale(1.06);pointer-events:none}
+/* The sharp foreground copy keeps the complete original frame and its aspect ratio. */
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:1;transform:none;filter:none;animation:none;will-change:auto;background:transparent}
 
-.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(16,38,31,.34) 0%,rgba(26,58,47,.54) 48%,rgba(18,39,32,.82) 100%);z-index:2}
+.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(16,38,31,.18) 0%,rgba(26,58,47,.34) 48%,rgba(18,39,32,.68) 100%);z-index:2}
 .hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(115deg,rgba(201,169,110,.06),transparent 38%,rgba(13,115,119,.08));pointer-events:none}
 .hero-content{position:relative;z-index:4;text-align:center;color:#fff;padding:0 24px;max-width:900px}
 .hero-content>*{opacity:0;transform:translateY(22px);animation:heroReveal .9s cubic-bezier(.22,.61,.36,1) forwards}
@@ -891,20 +893,52 @@ document.querySelectorAll('.lang-switch a').forEach(a=>a.classList.remove('activ
 event.target.classList.add('active');
 }
 
-// Soft original ambient instrumental. Try autoplay on arrival; if the browser blocks
-// audible autoplay, resume automatically on the visitor's first tap/key (no music button).
+// Original Himalayan nature ambience: gentle flowing-water texture, distant birdsong,
+// and a very soft warm pad. Browsers may require the first visitor interaction to unmute.
 (function(){
- let audioContext=null, masterGain=null, cycleTimer=null, isPlaying=false, cycleIndex=0;
- const chords=[[130.81,164.81,196,246.94],[110,130.81,164.81,196],[87.31,110,130.81,164.81],[98,123.47,146.83,196]];
- const melody=[[523.25,659.25,783.99],[440,523.25,659.25],[349.23,440,523.25],[392,493.88,587.33]];
- function addPadChord(freqs,start,duration){freqs.forEach((f,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain(),filter=audioContext.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(f,start);filter.type='lowpass';filter.frequency.setValueAtTime(850,start);g.gain.setValueAtTime(.0001,start);g.gain.linearRampToValueAtTime(i===0?.045:.027,start+2.8);g.gain.setValueAtTime(i===0?.045:.027,start+duration-1.8);g.gain.exponentialRampToValueAtTime(.0001,start+duration);o.connect(filter);filter.connect(g);g.connect(masterGain);o.start(start);o.stop(start+duration+.05);});}
- function addSoftNote(f,start){const o=audioContext.createOscillator(),over=audioContext.createOscillator(),g=audioContext.createGain(),filter=audioContext.createBiquadFilter();o.type=over.type='sine';o.frequency.setValueAtTime(f,start);over.frequency.setValueAtTime(f*2.01,start);filter.type='lowpass';filter.frequency.setValueAtTime(1600,start);g.gain.setValueAtTime(.0001,start);g.gain.linearRampToValueAtTime(.018,start+.08);g.gain.exponentialRampToValueAtTime(.0001,start+3.2);o.connect(filter);over.connect(filter);filter.connect(g);g.connect(masterGain);o.start(start);over.start(start);o.stop(start+3.3);over.stop(start+3.3);}
- function scheduleCycle(){if(!isPlaying||!audioContext||audioContext.state!=='running')return;const t=audioContext.currentTime+.12;for(let part=0;part<4;part++){const ci=(cycleIndex+part)%chords.length,ts=t+part*8;addPadChord(chords[ci],ts,8.4);addSoftNote(melody[ci][(cycleIndex+part)%3],ts+2.2);addSoftNote(melody[ci][(cycleIndex+part+1)%3],ts+5.1);}cycleIndex=(cycleIndex+1)%chords.length;cycleTimer=setTimeout(scheduleCycle,32000);}
- async function startMusic(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;if(!audioContext){audioContext=new C();masterGain=audioContext.createGain();masterGain.gain.setValueAtTime(.0001,audioContext.currentTime);masterGain.gain.linearRampToValueAtTime(.48,audioContext.currentTime+3);masterGain.connect(audioContext.destination);}try{await audioContext.resume();}catch(e){}if(audioContext.state==='running'&&!isPlaying){isPlaying=true;scheduleCycle();}return isPlaying;}
- // Attempt immediately. If Chrome/Android blocks it, the first ordinary interaction
- // anywhere on the page resumes the same soundtrack silently in the background.
- startMusic();
- const unlock=async()=>{const ok=await startMusic();if(ok){document.removeEventListener('pointerdown',unlock,true);document.removeEventListener('keydown',unlock,true);}};
+ let ctx=null, master=null, started=false, noiseSource=null, waterGain=null, waterLfo=null, birdTimer=null, padTimer=null;
+ const rand=(a,b)=>a+Math.random()*(b-a);
+ function makeNoise(){
+   const length=ctx.sampleRate*8, buffer=ctx.createBuffer(1,length,ctx.sampleRate), data=buffer.getChannelData(0);
+   let last=0; for(let i=0;i<length;i++){const white=Math.random()*2-1;last=last*.84+white*.16;data[i]=last*.72+white*.28;}
+   noiseSource=ctx.createBufferSource();noiseSource.buffer=buffer;noiseSource.loop=true;
+   const low=ctx.createBiquadFilter();low.type='lowpass';low.frequency.value=1050;low.Q.value=.35;
+   const high=ctx.createBiquadFilter();high.type='highpass';high.frequency.value=95;
+   waterGain=ctx.createGain();waterGain.gain.value=.0001;
+   waterLfo=ctx.createOscillator();const lfoGain=ctx.createGain();waterLfo.type='sine';waterLfo.frequency.value=.075;lfoGain.gain.value=180;
+   waterLfo.connect(lfoGain);lfoGain.connect(low.frequency);
+   noiseSource.connect(high);high.connect(low);low.connect(waterGain);waterGain.connect(master);
+   noiseSource.start();waterLfo.start();waterGain.gain.setTargetAtTime(.12,ctx.currentTime,2.8);
+ }
+ function birdChirp(){
+   if(!started||ctx.state!=='running')return;
+   const now=ctx.currentTime, count=Math.random()<.28?2:1;
+   for(let j=0;j<count;j++){
+     const t=now+j*rand(.12,.24), osc=ctx.createOscillator(), overtone=ctx.createOscillator(), gain=ctx.createGain(), filter=ctx.createBiquadFilter();
+     const base=rand(2100,3300), dur=rand(.12,.27);
+     osc.type='sine';overtone.type='sine';osc.frequency.setValueAtTime(base,t);osc.frequency.exponentialRampToValueAtTime(base*rand(1.22,1.55),t+dur*.55);osc.frequency.exponentialRampToValueAtTime(base*rand(.82,.98),t+dur);
+     overtone.frequency.setValueAtTime(base*2.01,t);overtone.frequency.exponentialRampToValueAtTime(base*2.55,t+dur*.55);overtone.frequency.exponentialRampToValueAtTime(base*1.8,t+dur);
+     filter.type='bandpass';filter.frequency.value=rand(2600,4200);filter.Q.value=1.4;
+     gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(rand(.006,.012),t+.025);gain.gain.exponentialRampToValueAtTime(.0001,t+dur);
+     osc.connect(filter);overtone.connect(filter);filter.connect(gain);gain.connect(master);osc.start(t);overtone.start(t);osc.stop(t+dur+.02);overtone.stop(t+dur+.02);
+   }
+   birdTimer=setTimeout(birdChirp,rand(950,2600));
+ }
+ function softPad(){
+   if(!started||ctx.state!=='running')return;
+   const now=ctx.currentTime, chord=[[196,246.94,293.66],[174.61,220,261.63],[146.83,196,220],[164.81,207.65,246.94]][Math.floor(Math.random()*4)];
+   chord.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),lp=ctx.createBiquadFilter();o.type='sine';o.frequency.value=f;lp.type='lowpass';lp.frequency.value=520;g.gain.setValueAtTime(.0001,now);g.gain.linearRampToValueAtTime(i===0?.008:.004,now+3);g.gain.setTargetAtTime(.0001,now+11,2);o.connect(lp);lp.connect(g);g.connect(master);o.start(now);o.stop(now+18);});
+   padTimer=setTimeout(softPad,16000);
+ }
+ async function startAmbience(){
+   const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+   if(!ctx){ctx=new AC();master=ctx.createGain();master.gain.value=.72;master.connect(ctx.destination);makeNoise();}
+   try{await ctx.resume();}catch(e){}
+   if(ctx.state==='running'&&!started){started=true;birdChirp();softPad();}
+ }
+ // Attempt on page load. If autoplay is blocked, start on the first normal interaction.
+ startAmbience();
+ const unlock=()=>{startAmbience();document.removeEventListener('pointerdown',unlock,true);document.removeEventListener('keydown',unlock,true);};
  document.addEventListener('pointerdown',unlock,true);document.addEventListener('keydown',unlock,true);
 })();
 </script>
