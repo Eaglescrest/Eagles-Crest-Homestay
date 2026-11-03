@@ -54,14 +54,9 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--dark-text)}
 .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:1;transform:scale(1.035);filter:saturate(.9) contrast(1.04) brightness(.9);animation:heroCinematic 18s ease-in-out infinite alternate;will-change:transform}
+.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;z-index:1;transform:none;filter:none;animation:none;will-change:auto}
 .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(16,38,31,.34) 0%,rgba(26,58,47,.54) 48%,rgba(18,39,32,.82) 100%);z-index:2}
-.hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(115deg,rgba(201,169,110,.06),transparent 38%,rgba(13,115,119,.08));animation:heroLight 12s ease-in-out infinite alternate;pointer-events:none}
-@keyframes heroCinematic{0%{transform:scale(1.035) translate3d(0,0,0)}100%{transform:scale(1.095) translate3d(-.7%,-.5%,0)}}
-@keyframes heroLight{0%{opacity:.45;transform:scale(1)}100%{opacity:.85;transform:scale(1.05)}}
-.snowflakes{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;overflow:hidden}
-.snowflake{position:absolute;top:-10px;color:rgba(255,255,255,.6);font-size:1em;animation:fall linear infinite}
-@keyframes fall{0%{transform:translateY(-10px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(360deg);opacity:.3}}
+.hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(115deg,rgba(201,169,110,.06),transparent 38%,rgba(13,115,119,.08));pointer-events:none}
 .hero-content{position:relative;z-index:4;text-align:center;color:#fff;padding:0 24px;max-width:900px}
 .hero-content>*{opacity:0;transform:translateY(22px);animation:heroReveal .9s cubic-bezier(.22,.61,.36,1) forwards}
 .hero-badge{display:inline-block;border:1px solid rgba(255,255,255,.3);padding:8px 24px;border-radius:30px;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-bottom:28px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);animation-delay:.2s}
@@ -103,7 +98,7 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .room-card:nth-child(even)>*{direction:ltr}
 .room-gallery{position:relative;background:var(--dark-text)}
 .room-main-img{width:100%;height:100%;min-height:400px;object-fit:cover;display:block}
-.room-main-img{transition:filter .18s ease;backface-visibility:hidden}
+.room-main-img{transition:opacity .18s ease}
 .room-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:flex;align-items:center;justify-content:center;width:42px;height:54px;border:0;border-radius:8px;background:transparent;color:#fff;font-size:1.25rem;cursor:pointer;opacity:.7;text-shadow:0 1px 5px rgba(0,0,0,.65);transition:opacity .2s,background .2s}
 .room-arrow:hover,.room-arrow:focus-visible{opacity:1;background:rgba(0,0,0,.12)}
 .room-arrow:focus-visible{outline:2px solid #fff;outline-offset:2px}
@@ -232,8 +227,7 @@ body.lang-hi .hi{display:inline}
 ::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:4px}
 ::-webkit-scrollbar-thumb:hover{background:var(--primary-dark)}
 
-@media(prefers-reduced-motion:reduce){.hero-video,.hero-overlay::after,.hero-content>*,.scroll-indicator{animation:none!important}.hero-video{transform:scale(1.035)}.hero-content>*{opacity:1;transform:none}}
-@media(max-width:768px){.hero-video{animation-duration:24s;transform:scale(1.02)}}
+@media(prefers-reduced-motion:reduce){.hero-content>*,.scroll-indicator{animation:none!important}.hero-content>*{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -264,7 +258,6 @@ body.lang-hi .hi{display:inline}
 <source src="./videos/Home%20page%20video.mp4" type="video/mp4">
 </video>
 <div class="hero-overlay"></div>
-<div class="snowflakes" id="snowflakes"></div>
 <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
 <div class="hero-badge">Welcome to the Himalayas</div>
 <h1 class="hero-title">Eagles Crest Homestay</h1>
@@ -556,10 +549,9 @@ body.lang-hi .hi{display:inline}
 <p class="section-subtitle tagline">Where the mountains call you home</p>
 </div>
 <div class="location-grid">
-<div class="map-container" data-aos="fade-right" style="position:relative;">
-<iframe title="Eagles Crest Homestay Kufri location" src="https://www.google.com/maps?q=Eagles%20Crest%20Homestay%20Kufri&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:450px;min-height:450px;border:none;display:block;pointer-events:none;"></iframe>
-<a href="https://maps.app.goo.gl/r7iAvDxtoDR4tpTV7" target="_blank" rel="noopener noreferrer" aria-label="Open the exact Eagles Crest Homestay Kufri destination in Google Maps" style="position:absolute;inset:0 0 46px 0;z-index:2;display:block;background:transparent;"></a>
-<a href="https://maps.app.goo.gl/r7iAvDxtoDR4tpTV7" target="_blank" rel="noopener noreferrer" style="position:relative;z-index:3;display:block;text-align:center;padding:10px;background:var(--cream);color:var(--teal);text-decoration:none;font-weight:600;">Open location in Google Maps</a>
+<div class="map-container" data-aos="fade-right">
+<iframe src="https://www.google.com/maps?q=https%3A%2F%2Fmaps.app.goo.gl%2F4a1PV5KhAkLokmjh9%3Fg_st%3Dac&output=embed" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<a href="https://maps.app.goo.gl/4a1PV5KhAkLokmjh9?g_st=ac" target="_blank" rel="noopener" style="display:block;text-align:center;padding:10px;background:var(--cream);color:var(--teal);text-decoration:none;font-weight:600;">Open location in Google Maps</a>
 </div>
 <div class="location-info" data-aos="fade-left">
 <h3>Getting Here</h3>
@@ -787,34 +779,6 @@ navLinks.classList.remove('active');
 });
 });
 
-function createSnowflakes(){
-const container=document.getElementById('snowflakes');
-const symbols=['❄','❅','❆','·','•'];
-for(let i=0;i<40;i++){
-const flake=document.createElement('div');
-flake.className='snowflake';
-flake.innerHTML=symbols[Math.floor(Math.random()*symbols.length)];
-flake.style.left=Math.random()*100+'%';
-flake.style.animationDuration=(Math.random()*4+4)+'s';
-flake.style.animationDelay=Math.random()*5+'s';
-flake.style.fontSize=(Math.random()*12+8)+'px';
-flake.style.opacity=Math.random()*0.5+0.2;
-container.appendChild(flake);
-}
-}
-createSnowflakes();
-
-// Preload room photos in the background so arrow clicks can swap instantly.
-const roomPhotoCache = new Map();
-document.querySelectorAll('.room-photo-sources [data-src]').forEach(photo => {
- const src = photo.dataset.src;
- if (!roomPhotoCache.has(src)) {
-  const image = new Image();
-  image.decoding = 'async';
-  image.src = src;
-  roomPhotoCache.set(src, image);
- }
-});
 
 function navigateRoom(button,direction){
  const gallery=button.closest('.room-gallery');
@@ -824,23 +788,17 @@ function navigateRoom(button,direction){
  const current=Number(gallery.dataset.photoIndex||0);
  const next=(current+direction+photos.length)%photos.length;
  gallery.dataset.photoIndex=String(next);
- const src=photos[next].dataset.src;
- let image=roomPhotoCache.get(src);
- if(!image){
-  image=new Image(); image.decoding='async'; image.src=src; roomPhotoCache.set(src,image);
- }
- const showPhoto=()=>{
+ mainImg.style.opacity='0';
+ // Preload the next photo before displaying it to avoid a blank frame.
+ const preload=new Image();
+ preload.onload=()=>{
   if(Number(gallery.dataset.photoIndex)!==next)return;
-  // Keep the current photo visible until the replacement is ready; never fade to black.
-  mainImg.src=src;
+  mainImg.src=preload.src;
   mainImg.alt=gallery.closest('.room-card').querySelector('.room-name').textContent+' — photo '+(next+1);
+  mainImg.style.opacity='1';
  };
- if(image.complete && image.naturalWidth>0){
-  showPhoto();
- }else{
-  image.onload=showPhoto;
-  image.onerror=()=>{};
- }
+ preload.onerror=()=>{mainImg.style.opacity='1';};
+ preload.src=photos[next].dataset.src;
 }
 
 const galleryImages=[
