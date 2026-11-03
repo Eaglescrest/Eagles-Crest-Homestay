@@ -54,13 +54,9 @@ h1,h2,h3,h4,h5,h6{font-family:'Playfair Display',serif;color:var(--dark-text);fo
 .hamburger.active span:nth-child(2){opacity:0}
 .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);background:var(--dark-text)}
 .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:1;transform:none;filter:none;animation:none;will-change:auto}
+.hero-video-backdrop{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;object-position:center;z-index:1;filter:blur(18px) brightness(.58);transform:scale(1.04);pointer-events:none}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:2;transform:none;filter:none;animation:none;will-change:auto;background:transparent}
 
-.ambient-music-toggle{position:fixed;right:20px;bottom:24px;z-index:1200;display:flex;align-items:center;gap:9px;padding:12px 18px;border:1px solid rgba(255,255,255,.45);border-radius:30px;background:rgba(26,58,47,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;font:500 .78rem 'Montserrat',sans-serif;letter-spacing:.5px;box-shadow:0 6px 24px rgba(0,0,0,.18);cursor:pointer;transition:background .25s,transform .25s}
-.ambient-music-toggle:hover{background:rgba(26,58,47,.98);transform:translateY(-2px)}
-.ambient-music-toggle .music-icon{font-size:1rem;color:var(--accent-light-gold);line-height:1}
-.ambient-music-toggle[aria-pressed="true"]{border-color:var(--accent-gold)}
-@media(max-width:480px){.ambient-music-toggle{right:14px;bottom:16px;padding:11px 15px;font-size:.72rem}}
 .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(180deg,rgba(16,38,31,.34) 0%,rgba(26,58,47,.54) 48%,rgba(18,39,32,.82) 100%);z-index:2}
 .hero-overlay::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.08),transparent 42%),linear-gradient(115deg,rgba(201,169,110,.06),transparent 38%,rgba(13,115,119,.08));pointer-events:none}
 .hero-content{position:relative;z-index:4;text-align:center;color:#fff;padding:0 24px;max-width:900px}
@@ -260,9 +256,8 @@ body.lang-hi .hi{display:inline}
 </nav>
 
 <section class="hero" id="home">
-<video class="hero-video" autoplay muted loop playsinline poster="./images/Main%20Page%20Photo-900x600.jpg">
-<source src="./videos/Home%20page%20video.mp4" type="video/mp4">
-</video>
+<video class="hero-video-backdrop" autoplay muted loop playsinline aria-hidden="true" tabindex="-1" poster="./images/Main%20Page%20Photo-900x600.jpg"><source src="./videos/Home%20page%20video.mp4" type="video/mp4"></video>
+<video class="hero-video" autoplay muted loop playsinline preload="auto" poster="./images/Main%20Page%20Photo-900x600.jpg"><source src="./videos/Home%20page%20video.mp4" type="video/mp4"></video>
 <div class="hero-overlay"></div>
 <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
 <div class="hero-badge">Welcome to the Himalayas</div>
@@ -896,136 +891,23 @@ document.querySelectorAll('.lang-switch a').forEach(a=>a.classList.remove('activ
 event.target.classList.add('active');
 }
 
-// Original soft ambient instrumental soundscape. Playback begins only after a visitor taps the control.
+// Soft original ambient instrumental. Try autoplay on arrival; if the browser blocks
+// audible autoplay, resume automatically on the visitor's first tap/key (no music button).
 (function(){
-const toggle=document.getElementById('ambientMusicToggle');
-const label=document.getElementById('ambientMusicLabel');
-if(!toggle||!label)return;
-let audioContext=null;
-let masterGain=null;
-let cycleTimer=null;
-let isPlaying=false;
-let cycleIndex=0;
-const chords=[
- [130.81,164.81,196.00,246.94], // Cmaj7
- [110.00,130.81,164.81,196.00], // Am7
- [87.31,110.00,130.81,164.81],  // Fmaj7
- [98.00,123.47,146.83,196.00]   // G6
-];
-const melody=[
- [523.25,659.25,783.99],
- [440.00,523.25,659.25],
- [349.23,440.00,523.25],
- [392.00,493.88,587.33]
-];
-function addPadChord(frequencies,start,duration){
- frequencies.forEach((frequency,index)=>{
-  const oscillator=audioContext.createOscillator();
-  const voiceGain=audioContext.createGain();
-  const filter=audioContext.createBiquadFilter();
-  oscillator.type='sine';
-  oscillator.frequency.setValueAtTime(frequency,start);
-  filter.type='lowpass';
-  filter.frequency.setValueAtTime(850,start);
-  voiceGain.gain.setValueAtTime(0.0001,start);
-  voiceGain.gain.linearRampToValueAtTime(index===0?0.075:0.045,start+2.8);
-  voiceGain.gain.setValueAtTime(index===0?0.075:0.045,start+duration-1.8);
-  voiceGain.gain.exponentialRampToValueAtTime(0.0001,start+duration);
-  oscillator.connect(filter);
-  filter.connect(voiceGain);
-  voiceGain.connect(masterGain);
-  oscillator.start(start);
-  oscillator.stop(start+duration+0.05);
- });
-}
-function addSoftNote(frequency,start){
- const oscillator=audioContext.createOscillator();
- const overtone=audioContext.createOscillator();
- const noteGain=audioContext.createGain();
- const filter=audioContext.createBiquadFilter();
- oscillator.type='sine';
- overtone.type='sine';
- oscillator.frequency.setValueAtTime(frequency,start);
- overtone.frequency.setValueAtTime(frequency*2.01,start);
- filter.type='lowpass';
- filter.frequency.setValueAtTime(1800,start);
- noteGain.gain.setValueAtTime(0.0001,start);
- noteGain.gain.linearRampToValueAtTime(0.035,start+0.06);
- noteGain.gain.exponentialRampToValueAtTime(0.0001,start+3.2);
- oscillator.connect(filter);
- overtone.connect(filter);
- filter.connect(noteGain);
- noteGain.connect(masterGain);
- oscillator.start(start);
- overtone.start(start);
- oscillator.stop(start+3.3);
- overtone.stop(start+3.3);
-}
-function scheduleCycle(){
- if(!isPlaying||!audioContext)return;
- const start=audioContext.currentTime+0.12;
- for(let part=0;part<4;part++){
-  const chordIndex=(cycleIndex+part)%chords.length;
-  const chordStart=start+part*8;
-  addPadChord(chords[chordIndex],chordStart,8.4);
-  const notes=melody[chordIndex];
-  addSoftNote(notes[(cycleIndex+part)%3],chordStart+2.2);
-  addSoftNote(notes[(cycleIndex+part+1)%3],chordStart+5.1);
- }
- cycleIndex=(cycleIndex+1)%chords.length;
- cycleTimer=setTimeout(scheduleCycle,32000);
-}
-async function startMusic(){
- const AudioContextClass=window.AudioContext||window.webkitAudioContext;
- if(!AudioContextClass){label.textContent='Music unavailable';return;}
- audioContext=new AudioContextClass();
- await audioContext.resume();
- masterGain=audioContext.createGain();
- masterGain.gain.setValueAtTime(0.0001,audioContext.currentTime);
- masterGain.gain.linearRampToValueAtTime(0.72,audioContext.currentTime+2.5);
- masterGain.connect(audioContext.destination);
- isPlaying=true;
- scheduleCycle();
- toggle.setAttribute('aria-pressed','true');
- toggle.setAttribute('aria-label','Turn off soft instrumental ambience');
- label.textContent='Music on';
-}
-async function stopMusic(){
- isPlaying=false;
- clearTimeout(cycleTimer);
- if(audioContext&&masterGain){
-  const ctx=audioContext;
-  masterGain.gain.cancelScheduledValues(ctx.currentTime);
-  masterGain.gain.setValueAtTime(Math.max(masterGain.gain.value,0.0001),ctx.currentTime);
-  masterGain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+1.1);
-  setTimeout(()=>ctx.close().catch(()=>{}),1200);
- }
- audioContext=null;
- masterGain=null;
- toggle.setAttribute('aria-pressed','false');
- toggle.setAttribute('aria-label','Play soft instrumental ambience');
- label.textContent='Play ambience';
-}
-toggle.addEventListener('click',async()=>{
- toggle.disabled=true;
- try{
-  if(isPlaying)await stopMusic();
-  else await startMusic();
- }catch(error){
-  isPlaying=false;
-  label.textContent='Tap to play music';
-  toggle.setAttribute('aria-pressed','false');
- }finally{
-  toggle.disabled=false;
- }
-});
+ let audioContext=null, masterGain=null, cycleTimer=null, isPlaying=false, cycleIndex=0;
+ const chords=[[130.81,164.81,196,246.94],[110,130.81,164.81,196],[87.31,110,130.81,164.81],[98,123.47,146.83,196]];
+ const melody=[[523.25,659.25,783.99],[440,523.25,659.25],[349.23,440,523.25],[392,493.88,587.33]];
+ function addPadChord(freqs,start,duration){freqs.forEach((f,i)=>{const o=audioContext.createOscillator(),g=audioContext.createGain(),filter=audioContext.createBiquadFilter();o.type='sine';o.frequency.setValueAtTime(f,start);filter.type='lowpass';filter.frequency.setValueAtTime(850,start);g.gain.setValueAtTime(.0001,start);g.gain.linearRampToValueAtTime(i===0?.045:.027,start+2.8);g.gain.setValueAtTime(i===0?.045:.027,start+duration-1.8);g.gain.exponentialRampToValueAtTime(.0001,start+duration);o.connect(filter);filter.connect(g);g.connect(masterGain);o.start(start);o.stop(start+duration+.05);});}
+ function addSoftNote(f,start){const o=audioContext.createOscillator(),over=audioContext.createOscillator(),g=audioContext.createGain(),filter=audioContext.createBiquadFilter();o.type=over.type='sine';o.frequency.setValueAtTime(f,start);over.frequency.setValueAtTime(f*2.01,start);filter.type='lowpass';filter.frequency.setValueAtTime(1600,start);g.gain.setValueAtTime(.0001,start);g.gain.linearRampToValueAtTime(.018,start+.08);g.gain.exponentialRampToValueAtTime(.0001,start+3.2);o.connect(filter);over.connect(filter);filter.connect(g);g.connect(masterGain);o.start(start);over.start(start);o.stop(start+3.3);over.stop(start+3.3);}
+ function scheduleCycle(){if(!isPlaying||!audioContext||audioContext.state!=='running')return;const t=audioContext.currentTime+.12;for(let part=0;part<4;part++){const ci=(cycleIndex+part)%chords.length,ts=t+part*8;addPadChord(chords[ci],ts,8.4);addSoftNote(melody[ci][(cycleIndex+part)%3],ts+2.2);addSoftNote(melody[ci][(cycleIndex+part+1)%3],ts+5.1);}cycleIndex=(cycleIndex+1)%chords.length;cycleTimer=setTimeout(scheduleCycle,32000);}
+ async function startMusic(){const C=window.AudioContext||window.webkitAudioContext;if(!C)return false;if(!audioContext){audioContext=new C();masterGain=audioContext.createGain();masterGain.gain.setValueAtTime(.0001,audioContext.currentTime);masterGain.gain.linearRampToValueAtTime(.48,audioContext.currentTime+3);masterGain.connect(audioContext.destination);}try{await audioContext.resume();}catch(e){}if(audioContext.state==='running'&&!isPlaying){isPlaying=true;scheduleCycle();}return isPlaying;}
+ // Attempt immediately. If Chrome/Android blocks it, the first ordinary interaction
+ // anywhere on the page resumes the same soundtrack silently in the background.
+ startMusic();
+ const unlock=async()=>{const ok=await startMusic();if(ok){document.removeEventListener('pointerdown',unlock,true);document.removeEventListener('keydown',unlock,true);}};
+ document.addEventListener('pointerdown',unlock,true);document.addEventListener('keydown',unlock,true);
 })();
-
 </script>
 
-<button class="ambient-music-toggle" id="ambientMusicToggle" type="button" aria-pressed="false" aria-label="Play soft instrumental ambience">
-<span class="music-icon" aria-hidden="true">♫</span>
-<span id="ambientMusicLabel">Play ambience</span>
-</button>
 </body>
 </html>
